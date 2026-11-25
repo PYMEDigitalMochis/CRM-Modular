@@ -36,3 +36,10 @@ Decisiones: D-001 a D-010 respetadas.
 - Asesor de seguridad: observación informativa `rls_enabled_no_policy` en lista privada, **intencional** porque no se permite lectura directa a roles cliente.
 - Pendiente: deshabilitar registro público en Auth (no hay acción administrativa disponible en la conexión actual), crear usuario inicial desde panel seguro, incorporar su UUID a la lista privada y probar acceso autorizado + denegado.
 - No hay cuenta autorizada todavía: por diseño toda escritura CRM sigue bloqueada.
+
+## Supabase — cuenta inicial autorizada (2026-11-25)
+- Verificado un usuario en `auth.users` con correo confirmado. Incorporado a `crm_private.usuario_autorizado` por operación administrativa restringida.
+- Prueba bajo rol `authenticated` e identidad autorizada simulada: `crm_private.acceso_permitido()` devolvió `true`; inserción transaccional de contacto permitida y revertida.
+- Prueba bajo identidad distinta: `crm_private.acceso_permitido()` devolvió `false`; inserción denegada con PostgreSQL 42501.
+- Validación tras pruebas: 0 contactos persistidos.
+- **Pendientes:** verificar desde panel que el registro público de Auth está deshabilitado; configurar variables públicas Vite en un entorno de despliegue seguro, comprobar login real desde Android y confirmar compilación CI. Las políticas RLS se verificaron por SQL simulado, no por sesiones HTTP reales.
