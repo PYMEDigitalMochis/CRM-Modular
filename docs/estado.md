@@ -50,3 +50,14 @@ Decisiones: D-001 a D-010 respetadas.
 - Conexión Cloudflare comprobada: cuenta disponible, cero Workers existentes al consultar.
 - Aplicación React v0.2 aún no desplegada ni conectada mediante variables de entorno del frontend.
 - Siguiente: aprovisionar compilación y despliegue de Static Assets con `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` y `VITE_ALLOWED_USER_ID` inyectados durante build, sin claves secretas ni datos reales en Git.
+
+## Despliegue Cloudflare Workers (2026-11-25)
+- Cuenta Cloudflare conectada y repositorio GitHub vinculado mediante integración Builds.
+- Worker creado: `crm-modular-pyme`. Static Assets configurados con `wrangler.jsonc`, rama `main`, `npm run build` y `npx --yes wrangler@4 deploy`.
+- Build `444c7918-59f3-463f-9754-df3cd4d0fc5a`: `stopped` / `success`. Logs confirman `tsc --noEmit`, compilación Vite, carga de archivos y despliegue completados.
+- URL entregada por Cloudflare: `https://crm-modular-pyme.pymedigital.workers.dev`. Dominio workers.dev habilitado, previews deshabilitadas.
+- Cloudflare consulta que el Worker tiene Static Assets asociados. Verificación HTTP directa externa: no disponible mediante el navegador de investigación en este turno.
+- Variables de build configuradas: `VITE_SUPABASE_URL`, `VITE_ALLOWED_USER_ID`. **PENDIENTE: `VITE_SUPABASE_PUBLISHABLE_KEY`**, porque el control de seguridad bloqueó la transferencia automática del valor entre servicios. La aplicación debe mostrar estado no configurado; NO está validado el inicio de sesión real.
+- No existen contraseñas ni claves `service_role` en GitHub o Worker. La clave publishable, al incluirse en Vite, será visible públicamente en el navegador cuando se configure.
+- El build sin `package-lock.json` fue correcto, pero no tiene dependencias reproducibles ni caché estable; generar lockfile y cambiar a `npm ci` antes de dar por estable.
+- **No declara el proyecto terminado**: falta configurar esa variable en Cloudflare Builds, reconstruir, confirmar visualmente acceso y prueba de sesión real desde Android.
