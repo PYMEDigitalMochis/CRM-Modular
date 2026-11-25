@@ -19,9 +19,16 @@ Fuente canónica de decisiones disponible: `05_registro_decisiones_v4.md` (archi
 - Esquema SQL, RLS y persistencia CRM.
 - Funciones de CRM y exportación.
 - PWA instalable y despliegue Cloudflare.
-- Prueba real en Android y CI GitHub.
+- Prueba real en Android y resultado de ejecución de CI GitHub.
 - Estrategia de respaldo y restauración.
 - Registro definitivo y verificación de licencias y cuotas.
+
+## CI GitHub Actions (2026-11-25)
+- Workflow `.github/workflows/ci.yml` publicado en la rama `main` (commit `c67eb5297814c9942f91cebb69f9940e1f6367ae`).
+- Ejecuta en Ubuntu estándar con Node 22: instalación, cinco pruebas de núcleo, control de fronteras y compilación TypeScript + Vite.
+- Validación local de sintaxis YAML: correcta. Archivo remoto leído y confirmado.
+- **PENDIENTE:** resultado del primer workflow (la interfaz de consulta disponible no muestra ejecuciones disparadas por `push`; ausencia de resultados de PR no equivale a éxito).
+- **DEUDA:** no existe `package-lock.json`; se usa temporalmente `npm install`, pendiente generar lockfile verificado para pasar a `npm ci` y reproducibilidad.
 
 ## Advertencia
 No se declara completada la Fase 1. Esta entrega contiene únicamente la estructura inicial del núcleo.
