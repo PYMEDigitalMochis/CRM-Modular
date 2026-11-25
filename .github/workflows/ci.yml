@@ -1,0 +1,42 @@
+name: Verificar núcleo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    name: Pruebas y compilación
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Temporal: falta package-lock.json. Sustituir por npm ci cuando exista.
+      - name: Instalar dependencias
+        run: npm install --no-audit --no-fund
+
+      - name: Probar lógica del núcleo
+        run: npm test
+
+      - name: Comprobar límites de módulos
+        run: npm run check:boundaries
+
+      - name: Comprobar TypeScript y compilar Vite
+        run: npm run build
