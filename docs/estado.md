@@ -26,3 +26,13 @@ Decisiones: D-001 a D-010 respetadas.
 - Avisos de seguridad: 0 en el estado actual (sin tablas de CRM).
 - Todavía no se ha creado usuario autorizado, ni se ha aplicado SQL/RLS, ni probado inicio de sesión.
 - No subir claves secretas ni datos personales a GitHub.
+
+
+## Supabase — esquema CRM seguro (2026-11-25)
+- Migración aplicada: `crm_fase1_acceso_cerrado`. Versión SQL: `supabase/migrations/20261125_crm_fase1_acceso_cerrado.sql`.
+- Tablas `contacto` e `interaccion` con RLS, propietario, estados controlados y borrado lógico; tabla privada `crm_private.usuario_autorizado` con 0 cuentas.
+- Comprobado: las tres tablas tienen RLS, 6 políticas en las tablas públicas, rol `anon` sin acceso SELECT a contactos y `authenticated` sin lectura de la lista privada.
+- Prueba negativa: usuario autenticado simulado no autorizado obtuvo error PostgreSQL `42501` al intentar INSERT; 0 contactos almacenados tras la prueba.
+- Asesor de seguridad: observación informativa `rls_enabled_no_policy` en lista privada, **intencional** porque no se permite lectura directa a roles cliente.
+- Pendiente: deshabilitar registro público en Auth (no hay acción administrativa disponible en la conexión actual), crear usuario inicial desde panel seguro, incorporar su UUID a la lista privada y probar acceso autorizado + denegado.
+- No hay cuenta autorizada todavía: por diseño toda escritura CRM sigue bloqueada.
