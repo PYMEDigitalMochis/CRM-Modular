@@ -43,3 +43,10 @@ Decisiones: D-001 a D-010 respetadas.
 - Prueba bajo identidad distinta: `crm_private.acceso_permitido()` devolvió `false`; inserción denegada con PostgreSQL 42501.
 - Validación tras pruebas: 0 contactos persistidos.
 - **Pendientes:** verificar desde panel que el registro público de Auth está deshabilitado; configurar variables públicas Vite en un entorno de despliegue seguro, comprobar login real desde Android y confirmar compilación CI. Las políticas RLS se verificaron por SQL simulado, no por sesiones HTTP reales.
+
+## Auth — actualización de configuración (2026-11-25)
+- Usuario comunicó que deshabilitó el registro público de Supabase Auth. **Confirmación del usuario; no verificada directamente por API** (la conexión no expone esa opción).
+- Estado de cuenta única y políticas RLS previamente probado mediante SQL.
+- Conexión Cloudflare comprobada: cuenta disponible, cero Workers existentes al consultar.
+- Aplicación React v0.2 aún no desplegada ni conectada mediante variables de entorno del frontend.
+- Siguiente: aprovisionar compilación y despliegue de Static Assets con `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` y `VITE_ALLOWED_USER_ID` inyectados durante build, sin claves secretas ni datos reales en Git.
